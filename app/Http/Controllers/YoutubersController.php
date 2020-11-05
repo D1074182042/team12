@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Player;
 use App\Models\youtuber;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class YoutubersController extends Controller
@@ -12,8 +13,9 @@ class YoutubersController extends Controller
     //
     public function index()
     {
+       $youtuber = Youtuber::all();
 
-      return view('youtubers.index');
+        return view('youtubers.index',['youtubers'=>$youtuber]);
 
     }
     public function create()
