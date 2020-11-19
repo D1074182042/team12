@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\channel;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use Carbon\Carbon;
 
 class ChannelsController extends Controller
 {
     //
     public function index()
     {
-        return view('channels.index');
+        $channel = Channel::all();
+
+        return view('channels.index',['channels'=>$channel]);
     }
     public function create()
     {
@@ -43,14 +47,17 @@ class ChannelsController extends Controller
     {
         if ($id == 5)
         {
-        $channel_name = "123";
-        $channel_guys = "123";
-        $channel_views = "123";
+        $c_name = "123";
+        $category = "123";
+        $fans = "123";
+        $views = "123";
+
         } else {
-        $channel_name = "123";
-        $channel_guys = "123";
-        $channel_views = "123";
+            $c_name = "123";
+            $category = "123";
+            $fans = "123";
+            $views = "123";
         }
-    return view('channels.edit')->with(['name' => $channel_name, 'guys' => $channel_guys, 'views' => $channel_views]);
+    return view('channels.edit')->with(['c_name' => $c_name, 'category' => $category, 'fans' => $fans, 'views' => $views]);
     }
 }

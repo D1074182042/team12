@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Player;
 use App\Models\youtuber;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
