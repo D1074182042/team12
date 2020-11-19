@@ -1,10 +1,18 @@
 <html>
 <head>
-<body>
-<h1>這是查詢頻道的view</h1>
+</head>
+<body class="antialiased">
+<h1>這是顯示所有頻道的 view </h1>
+
+<a href="<?php echo route('youtubers.index'); ?>" class="ml-1 underline">
+    所有頻道
+</a>
+
+<a href="<?php echo route('channels.create'); ?>" class="ml-1 underline">
+    新增頻道
+</a><br/>
 
 <table>
-    <thead>
     <tr>
         <th> 頻道名稱</th>
         <th> 類別</th>
@@ -14,17 +22,27 @@
     </thead>
     <tbody>
     @foreach($channels as $channel)
-        <tr>
-            <td> {{$channel->c_name}} </td>
-            <td> {{$channel->category}} </td>
-            <td> {{$channel->fans}} </td>
-            <td> {{$channel->views}} </td>
-        </tr>
+        @if ($channel->category == '生活類')
+            <tr style="color:red;">
+                <td> {{$channel->c_name}} </td>
+                <td> {{$channel->category}} </td>
+                <td> {{$channel->fans}} </td>
+                <td> {{$channel->views}} </td>
+                <td><a href="<?php echo route('channels.show', ['id' => $channel->id]);?>">顯示</a></td>
+                <td><a href="<?php echo route('channels.edit', ['id' => $channel->id]);?>">修改</a></td>
+            </tr>
+        @else
+            <tr style="color:blue;">
+                <td> {{$channel->c_name}} </td>
+                <td> {{$channel->category}} </td>
+                <td> {{$channel->fans}} </td>
+                <td> {{$channel->views}} </td>
+                <td><a href="<?php echo route('channels.show', ['id' => $channel->id]);?>">顯示</a></td>
+                <td><a href="<?php echo route('channels.edit', ['id' => $channel->id]);?>">修改</a></td>
+            </tr>
+    @endif
     @endforeach
-    </tbody>
 </table>
-
-<a href="/youtubers">回到Youber的View</a>
 </body>
-</head>
+
 </html>

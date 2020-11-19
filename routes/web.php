@@ -22,26 +22,26 @@ Route::get('/', function () {
 //查詢
 /*Route::get('channels', function () {
     return view('channels.index');*/
-Route::get('channels',[ChannelsController::class,'index']);
+Route::get('channels',[ChannelsController::class,'index'])->name('channels.index');
 //新增表單
-Route::get('channels/create',[ChannelsController::class,'create']);
+Route::get('channels/create',[ChannelsController::class,'create'])->name('create.create');
 
 //顯示單筆頻道資料
 Route::get('channels/{id}',[ChannelsController::class,'show'])
-->where('id', '[0-9]+');
+->where('id', '[0-9]+')->name('channels.show');
 //修改表單
 Route::get('channels/{id}/edit',[ChannelsController::class,'edit'])
-->where('id', '[0-9]+');
+->where('id', '[0-9]+')->name('channels.edit');
 
 /*-----------------------Youtubers--------------------------*/
 //查詢
-Route::get('youtubers', [YoutubersController::class,'index']);
+Route::get('youtubers', [YoutubersController::class,'index'])->name('youtubers.index');
 //新增表單
-Route::get('youtubers/create', [YoutubersController::class,'create']);
+Route::get('youtubers/create', [YoutubersController::class,'create'])->name('youtubers.index');
 
 //顯示單筆youtuber資料
 Route::get('youtubers/{id}', [YoutubersController::class,'show'])
-->where('id', '[0-9]+');
+->where('id', '[0-9]+')->name('youtubers.index');
 //修改表單
 Route::get('youtubers/{id}/edit', [YoutubersController::class,'edit'])
-->where('id', '[0-9]+');
+->where('id', '[0-9]+')->name('youtubers.index');

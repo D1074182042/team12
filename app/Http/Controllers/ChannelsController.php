@@ -23,11 +23,15 @@ class ChannelsController extends Controller
 
     public function show($id)
     {
-        $temp = channel::find($id);
+        $temp = Channel::findOrFail($id);
+
+        $channel = $temp->toArray();
+        return view('channels.show', $channel);
+       /* $temp = channel::find($id);
         if($temp == null)
             return"NO record";
 
-        $channel = $temp->toArray();
+        $channel = $temp->toArray();*/
         /*$data = [];
         if ($id == 5)
         {
@@ -40,7 +44,7 @@ class ChannelsController extends Controller
             $data['views'] = "123";
         }
         return view('channels.show', $data);*/
-        return view('channels.show',$channel);
+      /*  return view('channels.show',$channel);*/
 
     }
     public function edit($id)
