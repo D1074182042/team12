@@ -24,7 +24,7 @@ Route::get('/', function () {
     return view('channels.index');*/
 Route::get('channels',[ChannelsController::class,'index'])->name('channels.index');
 //新增表單
-Route::get('channels/create',[ChannelsController::class,'create'])->name('create.create');
+Route::get('channels/create',[ChannelsController::class,'create'])->name('channels.create');
 
 //顯示單筆頻道資料
 Route::get('channels/{id}',[ChannelsController::class,'show'])
@@ -37,11 +37,11 @@ Route::get('channels/{id}/edit',[ChannelsController::class,'edit'])
 //查詢
 Route::get('youtubers', [YoutubersController::class,'index'])->name('youtubers.index');
 //新增表單
-Route::get('youtubers/create', [YoutubersController::class,'create'])->name('youtubers.index');
+Route::get('youtubers/create', [YoutubersController::class,'create'])->name('youtubers.create');
 
 //顯示單筆youtuber資料
 Route::get('youtubers/{id}', [YoutubersController::class,'show'])
-->where('id', '[0-9]+')->name('youtubers.index');
+->where('id', '[0-9]+')->name('youtubers.show');
 //修改表單
 Route::get('youtubers/{id}/edit', [YoutubersController::class,'edit'])
-->where('id', '[0-9]+')->name('youtubers.index');
+->where('id', '[0-9]+')->name('youtubers.edit');

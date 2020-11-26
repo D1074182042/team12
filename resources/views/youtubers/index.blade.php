@@ -1,15 +1,15 @@
-<html>
-<head>
+@extends('app')
 
-</head>
-<body>
-<h1>這是顯示所有youtuber的view</h1>
+@section('title', '所有youtuber')
 
-<a href="<?php echo route('channels.index');?>" class="ml-1 underline">所有頻道
-</a>
-<a href="<?php echo route('youtubers.create');?>" class="ml-1 underline">新增youtuber
-</a>
-<a href="/channels">回到頻道的View</a>
+@section('youtuber_theme', '所有youtuber')
+
+@section('youtuber_contents')
+
+    <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
+        <a href="{{ route('youtubers.create') }} ">新增youtuber</a>
+    </div>
+
 <table>
     <thead>
     <tr>
@@ -33,8 +33,5 @@
         </tr>
     @endforeach
     </tbody>
-</table>
-
-</body>
-
-</html>
+ </table>
+@endsection

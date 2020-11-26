@@ -18,7 +18,14 @@ class ChannelsController extends Controller
     }
     public function create()
     {
-        return view('channels.create');
+        $channel = channel::create([
+            'c_name'=>'陳彥達',
+            'category'=>123,
+            'fans'=>123,
+            'views'=>'123',
+            'created_at'=>Carbon::now(),
+            'updated_at'=>Carbon::now()]);
+        return view('channels.create', $channel->toArray());
     }
 
     public function show($id)

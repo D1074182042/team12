@@ -1,16 +1,13 @@
-<html>
-<head>
-</head>
-<body class="antialiased">
-<h1>這是顯示所有頻道的 view </h1>
+@extends('app')
 
-<a href="<?php echo route('youtubers.index'); ?>" class="ml-1 underline">
-    所有頻道
-</a>
+@section('title', '所有頻道')
 
-<a href="<?php echo route('channels.create'); ?>" class="ml-1 underline">
-    新增頻道
-</a><br/>
+@section('channel_theme', '所有頻道')
+
+@section('channel_contents')
+    <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
+        <a href="{{ route('channels.create') }} ">新增頻道</a>
+    </div>
 
 <table>
     <tr>
@@ -19,8 +16,6 @@
         <th> 粉絲數(萬) </th>
         <th> 平均觀看量(萬)</th>
     </tr>
-    </thead>
-    <tbody>
     @foreach($channels as $channel)
         @if ($channel->category == '生活類')
             <tr style="color:red;">
@@ -43,6 +38,4 @@
     @endif
     @endforeach
 </table>
-</body>
-
-</html>
+@endsection
