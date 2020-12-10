@@ -3,31 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\youtuber;
+use App\Models\channel;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class YoutubersController extends Controller
 {
     //
     public function index()
     {
-       $youtuber = Youtuber::all();
+        $youtubers = DB::table('youtubers')
+            ->join('channels', 'youtubers.c_ID', '=', 'channels.id')
+            ->orderBy('youtubers.id')
+            ->select(
+                'youtubers.id',
+                'youtubers.name as yt_name',
+                'channels.name as c_ID',
+                'youtubers.year',
+                'youtubers.education',
+                'youtubers.country',
 
-        return view('youtubers.index',['youtubers'=>$youtuber]);
-
+            )->get();
+        return view('youtubers.index', ['youtubers' => $youtubers]);
     }
     public function create()
     {
-        $youtuber = youtuber::create([
-            'yt_name'=>'陳彥達',
-            'c_ID'=>3,
-            'year'=>12,
-            'education'=>'中鋒',
-            'country'=>'台灣',
-            'created_at'=>Carbon::now(),
-            'updated_at'=>Carbon::now()]);
-        return view('youtubers.create', $youtuber->toArray());
+
+        return view('youtubers.create');
     }
     public function show($id)
     {
@@ -57,6 +61,43 @@ class YoutubersController extends Controller
         return view('youtubers.edit', $data);
     }
 
+    public function store(Request $request)
+    {
+        $yt_name = $request->input('yt_name');
+        $c_id = $request->input('c_id');
+        $year = $request->input('year');
+        $education = $request->input('education');
+        $country = $request->input('country');
 
 
+        $player = youtuber::create([
+            'yt_name'=>$yt_name,
+            'c_id'=>$c_id,
+            'year'=>$year,
+            'education'=>$education,
+            'country'=>$country,]);
+
+        return redirect('youtubers');
+    }
+
+    public function update($id, Request $request)
+    {
+        $youtuber = youtuber::findOrFail($id);
+
+        $youtuber->yt_name = $request->input('yt_name');
+        $youtuber->c_id = $request->input('c_id');
+        $youtuber->year = $request->input('year');
+        $youtuber->education = $request->input('education');
+        $youtuber->country = $request->input('country');
+        $youtuber->save();
+
+        return redirect('youtubers');
+    }
+
+    public function destroy($id)
+    {
+        $youtuber = youtuber::findOrFail($id);
+        $youtuber->delete();
+        return redirect('youtubers');
+    }
 }

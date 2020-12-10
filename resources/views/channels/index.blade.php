@@ -23,8 +23,8 @@
                 <td> {{$channel->category}} </td>
                 <td> {{$channel->fans}} </td>
                 <td> {{$channel->views}} </td>
-                <td><a href="<?php echo route('channels.show', ['id' => $channel->id]);?>">顯示</a></td>
-                <td><a href="<?php echo route('channels.edit', ['id' => $channel->id]);?>">修改</a></td>
+                <td><a href="{{ route('channels.show', ['id' => $channel->id]) }}">顯示</a></td>
+                <td><a href="{{ route('channels.edit', ['id' => $channel->id])}}>">修改</a></td>
             </tr>
         @else
             <tr style="color:blue;">
@@ -32,8 +32,8 @@
                 <td> {{$channel->category}} </td>
                 <td> {{$channel->fans}} </td>
                 <td> {{$channel->views}} </td>
-                <td><a href="<?php echo route('channels.show', ['id' => $channel->id]);?>">顯示</a></td>
-                <td><a href="<?php echo route('channels.edit', ['id' => $channel->id]);?>">修改</a></td>
+                <td><a href="{{route('channels.show', ['id' => $channel->id])}}>">顯示</a></td>
+                <td><a href="{{ route('channels.edit', ['id' => $channel->id])}}>">修改</a></td>
             </tr>
     @endif
     @endforeach

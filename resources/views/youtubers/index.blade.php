@@ -18,6 +18,9 @@
         <th> 年齡 </th>
         <th> 學歷 </th>
         <th> 國家 </th>
+        <th>操作1</th>
+        <th>操作2</th>
+        <th>操作3</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +33,13 @@
             <td> {{$youtuber->country}} </td>
             <td><a href="<?php echo route('youtubers.show', ['id'=>$youtuber->id]);?>">顯示</a></td>
             <td><a href="<?php echo route('youtubers.edit', ['id'=>$youtuber->id]);?>">修改</a></td>
+            <td>
+                <form action="{{ url('/youtubers/delete', ['id' => $youtuber->id]) }}" method="post">
+                    <input class="btn btn-default" type="submit" value="刪除" />
+                    @method('delete')
+                    @csrf
+                </form>
+            </td>
         </tr>
     @endforeach
     </tbody>
