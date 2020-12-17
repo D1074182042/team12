@@ -55,5 +55,8 @@ Route::get('youtubers/{id}', [YoutubersController::class,'show'])
 Route::get('youtubers/{id}/edit', [YoutubersController::class,'edit'])
 ->where('id', '[0-9]+')->name('youtubers.edit');
 
+
+// 修改資料
+Route::patch('youtubers/update/{id}', [YoutubersController::class, 'update'])->where('id', '[0-9]+')->name('youtubers.update');
 // 刪除資料
 Route::delete('youtubers/delete/{id}', [YoutubersController::class, 'destroy'])->where('id', '[0-9]+')->name('youtubers.destroy');

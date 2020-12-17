@@ -14,65 +14,92 @@ class YoutubersController extends Controller
     //
     public function index()
     {
-        $youtubers = DB::table('youtubers')
-            ->join('channels', 'youtubers.c_ID', '=', 'channels.id')
-            ->orderBy('youtubers.id')
-            ->select(
-                'youtubers.id',
-                'youtubers.name as yt_name',
-                'channels.name as c_ID',
-                'youtubers.year',
-                'youtubers.education',
-                'youtubers.country',
+        $youtubers = youtuber::allData()->get();
 
-            )->get();
-        return view('youtubers.index', ['youtubers' => $youtubers]);
+        $positions = youtuber::allPositions()->get();
+        $data = [];
+        foreach ($positions as $position)
+        {
+            $data["$position->position"] = $position->position;
+        }
+        return view('youtubers.index', ['youtubers' => $youtubers, 'positions'=>$data]);
+    }
+    public function senior()
+    {
+        $youtubers = youtuber::senior()->get();
+        $positions = youtuber::Positions()->get();
+        $data = [];
+        foreach ($positions as $position)
+        {
+            $data["$position->position"] = $position->position;
+        }
+        return view('youtubers.index', ['youtubers' => $youtubers, 'positions'=>$data]);
+    }
+
+
+    public function position(Request $request)
+    {
+        $youtubers = youtuber::position($request->input('pos'))->get();
+
+        $positions = youtuber::Positions()->get();
+        $data = [];
+        foreach ($positions as $position)
+        {
+            $data["$position->position"] = $position->position;
+        }
+        return view('youtubers.index', ['youtubers' => $youtubers, 'positions'=>$data]);
     }
     public function create()
     {
 
-        return view('youtubers.create');
+        $channels = DB::table('channels')
+            ->select('channels.id', 'channels.name')
+            ->orderBy('channels.id', 'asc')
+            ->get();
+
+        $data = [];
+        foreach ($channels as $channel)
+        {
+            $data[$channel->id] = $channel->name;
+        }
+        return view('youtubers.create', ['channels' =>$data]);
     }
     public function show($id)
     {
-        $temp = youtuber::where('education', '國立臺灣藝術大學')->first();
-        if ($temp == null)
-            return "No record";
-
-        $youtuber = $temp->toArray();
-
+        $youtuber = youtuber::findOrFail($id)->toArray();
+        $channel= channel::findOrFail($youtuber->c_ID);
         return view('youtubers.show', $youtuber);
     }
     public function edit($id)
     {
-        if ($id == 5)
+        $channels = DB::table('channels')
+            ->select('channels.id', 'channels.name')
+            ->orderBy('channels.id', 'asc')
+            ->get();
+
+        $data = [];
+        foreach ($channels as $channel)
         {
-            $yt_name = "";
-            $education = "";
-            $country = "";
-        } else {
-            $yt_name = "";
-            $education = "";
-            $country = "";
-
+            $data[$channel->id] = $channel->name;
         }
-        $data = compact('yt_name', 'education', 'country');
 
-        return view('youtubers.edit', $data);
+        $youtuber = youtuber::findOrFail($id);
+
+        return view('youtubers.edit', ['youtuber' =>$youtuber, 'channels' => $data]);
     }
 
     public function store(Request $request)
     {
         $yt_name = $request->input('yt_name');
-        $c_id = $request->input('c_id');
+        $c_ID = $request->input('c_ID');
         $year = $request->input('year');
         $education = $request->input('education');
         $country = $request->input('country');
 
 
-        $player = youtuber::create([
+        $youtuber = youtuber::create([
             'yt_name'=>$yt_name,
-            'c_id'=>$c_id,
+            'c_ID'=>$c_ID,
             'year'=>$year,
             'education'=>$education,
             'country'=>$country,]);
@@ -85,7 +112,7 @@ class YoutubersController extends Controller
         $youtuber = youtuber::findOrFail($id);
 
         $youtuber->yt_name = $request->input('yt_name');
-        $youtuber->c_id = $request->input('c_id');
+        $youtuber->c_ID = $request->input('c_ID');
         $youtuber->year = $request->input('year');
         $youtuber->education = $request->input('education');
         $youtuber->country = $request->input('country');
