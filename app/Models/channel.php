@@ -13,6 +13,14 @@ class channel extends Model
         'category',
         'fans',
         'views',
-        'created_at',
-        'updated_at'];
+        'created_at'];
+
+    public function scopeCategory($query, $category)
+    {
+        $query->where('category', '=', $category);
+    }
+    public function youtubers()
+    {
+        return $this->hasMany('App\Models\youtuber', 'c_ID');
+    }
 }

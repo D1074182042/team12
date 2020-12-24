@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateYoutuberRequest;
 use App\Models\youtuber;
 use App\Models\channel;
 use Carbon\Carbon;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,38 +14,38 @@ class YoutubersController extends Controller
     //
     public function index()
     {
-        $youtubers = youtuber::allData()->get();
+        $youtubers = youtuber::all();
 
-        $positions = youtuber::allPositions()->get();
+        $years = youtuber::allYears()->get();
         $data = [];
-        foreach ($positions as $position)
+        foreach ($years as $year)
         {
-            $data["$position->position"] = $position->position;
+            $data["$year->year"] = $year->year;
         }
-        return view('youtubers.index', ['youtubers' => $youtubers, 'positions'=>$data]);
+        return view('youtubers.index', ['youtubers' => $youtubers, 'years'=>$data]);
     }
     public function senior()
     {
         $youtubers = youtuber::senior()->get();
-        $positions = youtuber::Positions()->get();
+        $years = youtuber::allYears()->get();
         $data = [];
-        foreach ($positions as $position)
+        foreach ($years as $year)
         {
-            $data["$position->position"] = $position->position;
+            $data["$year->year"] = $year->year;
         }
         return view('youtubers.index', ['youtubers' => $youtubers, 'positions'=>$data]);
     }
 
 
-    public function position(Request $request)
+    public function year(Request $request)
     {
-        $youtubers = youtuber::position($request->input('pos'))->get();
+        $youtubers = youtuber::year($request->input('yea'))->get();
 
-        $positions = youtuber::Positions()->get();
+        $years = youtuber::allYears()->get();
         $data = [];
-        foreach ($positions as $position)
+        foreach ($years as $year)
         {
-            $data["$position->position"] = $position->position;
+            $data["$year->year"] = $year->year;
         }
         return view('youtubers.index', ['youtubers' => $youtubers, 'positions'=>$data]);
     }
@@ -68,7 +68,7 @@ class YoutubersController extends Controller
     {
         $youtuber = youtuber::findOrFail($id)->toArray();
         $channel= channel::findOrFail($youtuber->c_ID);
-        return view('youtubers.show', $youtuber);
+        return view('youtubers.show', ['youtuber' => $youtuber, 'channel_name'=>$channel->name]);
     }
     public function edit($id)
     {
@@ -88,7 +88,7 @@ class YoutubersController extends Controller
         return view('youtubers.edit', ['youtuber' =>$youtuber, 'channels' => $data]);
     }
 
-    public function store(Request $request)
+    public function store(CreateYoutuberRequest $request)
     {
         $yt_name = $request->input('yt_name');
         $c_ID = $request->input('c_ID');
@@ -107,7 +107,7 @@ class YoutubersController extends Controller
         return redirect('youtubers');
     }
 
-    public function update($id, Request $request)
+    public function update($id, CreateYoutuberRequest $request)
     {
         $youtuber = youtuber::findOrFail($id);
 

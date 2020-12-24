@@ -42,6 +42,10 @@ Route::delete('channels/delete/{id}', [ChannelsController::class, 'destroy'])->w
 /*-----------------------Youtubers--------------------------*/
 //查詢
 Route::get('youtubers', [YoutubersController::class,'index'])->name('youtubers.index');
+// 資深youtuber查詢
+Route::get('youtubers/senior', [YoutubersController::class, 'senior'])->name('youtubers.senior');
+// 選定年齡查詢youtuber
+Route::post('youtubers/year', [YoutubersController::class, 'year'])->name('youtubers.year');
 //新增表單
 Route::get('youtubers/create', [YoutubersController::class,'create'])->name('youtubers.create');
 

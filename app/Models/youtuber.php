@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class youtuber extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $fillable = [
         'yt_name',
         'c_ID',
         'year',
@@ -17,47 +17,25 @@ class youtuber extends Model
         'created_at',
         'updated_at'];
 
-public function scopeAllData($query)
-{
-    $query->join('channels', 'youtubers.c_ID', '=', 'channels.id')
-        ->orderBy('players.id')
-        ->select(
-            'youtubers.id',
-            'youtubers.name as yt_name',
-            'channels.name as c_name',
-            'youtubers.year',
-            'youtubers.education',
-            'youtubers.country');
-}
+    public function channel()
+    {
+        return $this->belongsTo('App\Models\channel', 'c_ID', 'id');
+    }
+
     public function scopeSenior($query)
     {
-        $query->join('channels', 'youtubers.c_ID', '=', 'channels.id')
-            ->where('year', '>', 10)
-            ->orderBy('year')
-            ->select(
-                'youtubers.id',
-                'youtubers.name as yt_name',
-                'channels.name as c_name',
-                'youtubers.year',
-                'youtubers.education',
-                'youtubers.country');
+        $query->where('year', '>', 10)
+            ->orderBy('year');
     }
-    public function scopeAllPositions($query)
+
+    public function scopeAllYears($query)
     {
-        $query->select('position')->groupBy('position');
+        $query->select('year')->groupBy('year');
     }
-    public function scopePosition($query, $pos)
+
+    public function scopeYear($query, $yea)
     {
-        $query->join('channels', 'youtubers.c_ID', '=', 'channels.id')
-            ->where('position', '=', $pos)
-            ->orderBy('year')
-            ->select(
-                'youtubers.id',
-                'youtubers.name as yt_name',
-                'channels.name as c_name',
-                'youtubers.year',
-                'youtubers.education',
-                'youtubers.country');
+        $query->where('year', '=', $yea)
+            ->orderBy('year');
     }
 }
-

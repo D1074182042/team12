@@ -5,9 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\channel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Http\Requests\CreateChannelRequest;
 
 class ChannelsController extends Controller
 {
+    public function generateRandomString($length = 10) {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+    public function generateRandomName()
+    {
+        $c_name = $this->generateRandomString(rand(2, 15));
+        $c_name = strtolower($c_name);
+        $c_name = ucfirst($c_name);
+        return $c_name;
+    }
     //
     public function index()
     {
@@ -15,63 +33,38 @@ class ChannelsController extends Controller
 
         return view('channels.index',['channels'=>$channels]);
     }
+
+    public function life()
+    {
+        $channels = Channel::category('生活類')->get();
+        return view('channels.index', ['channels'=>$channels]);
+    }
+
+    public function funny ()
+    {
+        $channels = Channel::category('娛樂類')->get();
+        return view('channels.index', ['channels'=>$channels]);
+    }
+
     public function create()
     {
-        $channel = channel::create([
-            'c_name'=>'陳彥達',
-            'category'=>123,
-            'fans'=>123,
-            'views'=>'123',
-            'created_at'=>Carbon::now(),
-            'updated_at'=>Carbon::now()]);
-        return view('channels.create', $channel->toArray());
+        return view('channels.create');
     }
 
     public function show($id)
     {
-        $temp = Channel::findOrFail($id);
-
-        $channel = $temp->toArray();
-        return view('channels.show', $channel);
-       /* $temp = channel::find($id);
-        if($temp == null)
-            return"NO record";
-
-        $channel = $temp->toArray();*/
-        /*$data = [];
-        if ($id == 5)
-        {
-            $data['name'] = "123";
-            $data['guys'] = "123";
-            $data['views'] = "123";
-        } else {
-            $data['name'] = "123";
-            $data['guys'] = "123";
-            $data['views'] = "123";
-        }
-        return view('channels.show', $data);*/
-      /*  return view('channels.show',$channel);*/
+        $channel = Channel::findOrFail($id);
+        $youtubers = $channel-> youtubers;
+        return view('channels.show', ['channel'=>$channel,'youtubers'=>$youtubers]);
 
     }
     public function edit($id)
     {
-        if ($id == 5)
-        {
-        $c_name = "123";
-        $category = "123";
-        $fans = "123";
-        $views = "123";
-
-        } else {
-            $c_name = "123";
-            $category = "123";
-            $fans = "123";
-            $views = "123";
-        }
-    return view('channels.edit')->with(['c_name' => $c_name, 'category' => $category, 'fans' => $fans, 'views' => $views]);
+      $channel = Channel::findOrFail($id);
+    return view('channels.edit',['channel'=>$channel]);
     }
 
-    public function store(Request $request)
+    public function store(CreateChannelRequest $request)
     {
         $c_name = $request->input('c_name');
         $category = $request->input('category');
@@ -79,13 +72,31 @@ class ChannelsController extends Controller
         $views = $request->input('views');
 
         Channel::create([
-            'name' => $c_name,
-            'city' => $category,
+            'c_name' => $c_name,
+            'category' => $category,
             'fans' => $fans,
             'views' => $views,
             'created' => Carbon::now()
         ]);
 
+        return redirect('channels');
+    }
+    public function update($id, CreateChannelRequest $request)
+    {
+        $channel = channel::findOrFail($id);
+
+        $channel->c_name = $request->input('c_name');
+        $channel->category = $request->input('category');
+        $channel->fans = $request->input('fans');
+        $channel->views = $request->input('views');
+        $channel->save();
+
+        return redirect('channels');
+    }
+    public function destroy($id)
+    {
+        $channel = Channel::findOrFail($id);
+        $channel->delete();
         return redirect('channels');
     }
 }

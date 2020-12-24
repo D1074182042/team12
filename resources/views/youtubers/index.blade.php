@@ -8,6 +8,14 @@
 
     <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
         <a href="{{ route('youtubers.create') }} ">新增youtuber</a>
+        <a href="{{ route('youtubers.index') }} ">所有youtuber</a>
+        <a href="{{ route('youtubers.senior') }} ">資深youtuber</a>
+        <form action="{{ url('youtubers/year') }}" method='YEAR'>
+            {!! Form::label('yea', '選取年齡：') !!}
+            {!! Form::select('yea', $years, ['class' => 'form-control']) !!}
+            <input class="btn btn-default" type="submit" value="查詢" />
+            @csrf
+        </form>
     </div>
 
 <table>

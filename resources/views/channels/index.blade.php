@@ -7,6 +7,7 @@
 @section('channel_contents')
     <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
         <a href="{{ route('channels.create') }} ">新增頻道</a>
+        <a href="{{ route('channels.index') }} ">所有球隊</a>
     </div>
 
 <table>
